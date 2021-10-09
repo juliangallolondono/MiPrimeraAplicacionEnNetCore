@@ -1,0 +1,28 @@
+﻿@using MiPrimeraAplicacionEnNetCore.Clases
+@model IEnumerable<PersonaCLS>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID Persona</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Sexo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PersonaCLS persona in Model)
+        {
+            <tr>
+                <td>@persona.iidPersona</td>
+                <td>@persona.nombreCompleto</td>
+                <td>@persona.email</td>
+                <td>@persona.nombreSexo</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
