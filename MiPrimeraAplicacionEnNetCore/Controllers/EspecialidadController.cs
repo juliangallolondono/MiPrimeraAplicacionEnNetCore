@@ -10,20 +10,40 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 {
     public class EspecialidadController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(EspecialidadCLS oEspecialidadCLS)
         {
             List<EspecialidadCLS> listaEspecialidad = new List<EspecialidadCLS>();
 
             using (BDHospitalContext db = new BDHospitalContext() )
             {
-                listaEspecialidad = (from especialidad in db.Especialidads
-                                     where especialidad.Bhabilitado == 1
-                                     select new EspecialidadCLS
-                                     {
-                                         iidespecialidad = especialidad.Iidespecialidad,
-                                         nombre = especialidad.Nombre,
-                                         description = especialidad.Descripcion
-                                     }).ToList();
+                if (oEspecialidadCLS.nombre == null || oEspecialidadCLS.nombre == "")
+                {
+                    listaEspecialidad = (from especialidad in db.Especialidads
+                                         where especialidad.Bhabilitado == 1
+                                         select new EspecialidadCLS
+                                         {
+                                             iidespecialidad = especialidad.Iidespecialidad,
+                                             nombre = especialidad.Nombre,
+                                             description = especialidad.Descripcion
+                                         }).ToList();
+
+                    ViewBag.nombreEsPecialidad = "";
+                }
+                else
+                {
+                    listaEspecialidad = (from especialidad in db.Especialidads
+                                         where especialidad.Bhabilitado == 1
+                                         && especialidad.Nombre.Contains(oEspecialidadCLS.nombre)
+                                         select new EspecialidadCLS
+                                         {
+                                             iidespecialidad = especialidad.Iidespecialidad,
+                                             nombre = especialidad.Nombre,
+                                             description = especialidad.Descripcion
+                                         }).ToList();
+                    ViewBag.nombreEspecialidad = oEspecialidadCLS.nombre;
+                }
+
+                
 
             }
 

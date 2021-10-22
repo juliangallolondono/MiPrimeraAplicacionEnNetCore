@@ -2,7 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    string nombreSede = ViewBag.nombreSede;
 }
+
+<form id="frmEnviar" asp-controller="Sede" asp-action="Index" class="mb-2" method="post">
+    <label>Ingrese nombre sede</label>
+    <input type="text" class="form-check form-control" name="nombreSede" onkeyup="Buscar()" value="@nombreSede"/>
+</form>
+
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -35,3 +42,9 @@
 }
     </tbody>
 </table>
+
+<script>
+    function Buscar() {
+        document.getElementById("frmEnviar").submit();
+    }
+</script>

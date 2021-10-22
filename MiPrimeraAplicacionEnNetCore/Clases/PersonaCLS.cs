@@ -16,5 +16,6 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         public string email { get; set; }
         [Display(Name = "Sexo")]
         public string nombreSexo { get; set; }
+        public int iidSexo { get; set; }
     }
 }
