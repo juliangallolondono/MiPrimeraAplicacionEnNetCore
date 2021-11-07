@@ -7,7 +7,7 @@
 
 <form style="display:grid; grid-template-columns:1fr 2fr" class="mb-2" id="frmEnviar">
     <label>Ingrese el nombre de la forma farmaceutica</label>
-    @Html.DropDownList("iidFOrmaFarmaceutica", listaForma, new { @class="form form-control"})
+    @Html.DropDownList("iidFormaFarmaceutica", listaForma, new { @class="form form-control"})
 
 </form>
 <table class="table">
@@ -56,7 +56,7 @@
 </table>
 
 <script>
-    var iidFOrmaFarmaceutica = document.getElementById("iidFOrmaFarmaceutica");
+    var iidFormaFarmaceutica = document.getElementById("iidFormaFarmaceutica");
     iidFOrmaFarmaceutica.onchange = function() {
         document.getElementById("frmEnviar").submit();
     }
