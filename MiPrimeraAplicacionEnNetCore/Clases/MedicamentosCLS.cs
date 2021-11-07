@@ -19,5 +19,7 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         public int? stock { get; set; }
         [Display(Name = "Forma farmacéutica")]
         public string nombreFormaFarmaceutica { get; set; }
+
+        public int iidFormaFarmaceutica { get; set; }
     }
 }

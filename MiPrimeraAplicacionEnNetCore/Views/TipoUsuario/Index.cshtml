@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MiPrimeraAplicacionEnNetCore.Clases.TipoUsuarioCLS>
+
+@{
+    ViewData["Title"] = "Index";
+
+    string nombre = ViewBag.Nombre;
+    string descripcion = ViewBag.Descripcion;
+    int  IidTipoUsuario = ViewBag.IidTipoUsuario;
+
+}
+
+<h1>Index</h1>
+
+<form asp-controller="TipoUsuario" asp-action="Index">
+    <input type="submit" value="Enviar" class="btn btn-primary"/>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.iidTipoUsuario)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.descripcion)
+                </th>
+            
+            </tr>
+            <tr>
+                <th>
+                    @if(IidTipoUsuario != 0){
+                        <input type="number" name="iidTipoUsuario" class="form-check form-control" value="@IidTipoUsuario"/>
+                    }
+                    else
+                    {
+                        <input type="number" name="iidTipoUsuario" class="form-check form-control"/>
+                    }
+                </th>
+                <th>
+                    <input type="text" name="nombre" class="form-check form-control" value="@nombre"/>
+                </th>
+                <th>
+                    <input type="text" name="descripcion" class="form-check form-control" value="@descripcion"/>
+                </th>
+            
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.iidTipoUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+  </form>
