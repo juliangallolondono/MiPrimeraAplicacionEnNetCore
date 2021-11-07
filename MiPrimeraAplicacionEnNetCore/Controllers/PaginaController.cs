@@ -10,22 +10,44 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 {
     public class PaginaController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(PaginaCLS oPaginaCLS)
         {
             List<PaginaCLS> listaPaginas = new List<PaginaCLS>();
 
             using (BDHospitalContext bd = new BDHospitalContext())
             {
-                listaPaginas = (from pagina in bd.Paginas
-                                where pagina.Bhabilitado == 1
-                                select new PaginaCLS
-                                {
-                                    iidPagina = pagina.Iidpagina,
-                                    mensaje = pagina.Mensaje,
-                                    accion = pagina.Accion,
-                                    controller = pagina.Controlador,
+                if(String.IsNullOrEmpty(oPaginaCLS.mensaje))
+                {
+                    listaPaginas = (from pagina in bd.Paginas
+                                    where pagina.Bhabilitado == 1
+                                    select new PaginaCLS
+                                    {
+                                        iidPagina = pagina.Iidpagina,
+                                        mensaje = pagina.Mensaje,
+                                        accion = pagina.Accion,
+                                        controller = pagina.Controlador,
 
-                                }).ToList();
+                                    }).ToList();
+                    
+                }
+                else
+                {
+                    listaPaginas = (from pagina in bd.Paginas
+                                    where pagina.Bhabilitado == 1
+                                    && pagina.Mensaje.Contains(oPaginaCLS.mensaje)
+                                    select new PaginaCLS
+                                    {
+                                        iidPagina = pagina.Iidpagina,
+                                        mensaje = pagina.Mensaje,
+                                        accion = pagina.Accion, 
+                                        controller = pagina.Controlador
+                                    }).ToList();
+
+                    
+                }
+
+                ViewBag.mensaje = oPaginaCLS.mensaje;
+
             }
 
                 return View(listaPaginas);
