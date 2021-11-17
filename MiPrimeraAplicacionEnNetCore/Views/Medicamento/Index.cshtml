@@ -5,11 +5,15 @@
     List<SelectListItem> listaForma = ViewBag.listaForma;
 }
 
+<a class="btn btn-primary" asp-action="Agregar" asp-controller="Medicamento">Agregar</a>
+
 <form style="display:grid; grid-template-columns:1fr 2fr" class="mb-2" id="frmEnviar">
     <label>Ingrese el nombre de la forma farmaceutica</label>
     @Html.DropDownList("iidFormaFarmaceutica", listaForma, new { @class="form form-control"})
 
 </form>
+
+
 <table class="table">
     <thead class="thead-dark">
         <tr>

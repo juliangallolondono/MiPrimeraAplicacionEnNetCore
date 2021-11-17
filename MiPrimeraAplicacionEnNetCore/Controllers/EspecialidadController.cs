@@ -49,5 +49,40 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 
                 return View(listaEspecialidad);
         }
+
+
+        public IActionResult Agregar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Agregar(EspecialidadCLS oEspeciliadad)
+        {
+            try
+            {
+                using (BDHospitalContext db = new BDHospitalContext())
+                {
+                    if(!ModelState.IsValid)
+                    {
+                        return View(oEspeciliadad);
+                    }
+                    else
+                    {
+                        Especialidad objeto = new Especialidad();
+                        objeto.Nombre = oEspeciliadad.nombre;
+                        objeto.Descripcion = oEspeciliadad.description;
+                        objeto.Bhabilitado = 1;
+                        db.Especialidads.Add(objeto);   
+                        db.SaveChanges();   
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(oEspeciliadad);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

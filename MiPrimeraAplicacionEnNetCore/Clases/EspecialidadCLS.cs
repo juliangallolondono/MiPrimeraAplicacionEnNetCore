@@ -10,8 +10,10 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
     {
         [Display(Name="Id Especialidad")]
         public int iidespecialidad { get; set; }
-        [Display(Name = "Nombre")]
+        [Display(Name = "Nombre Especialidad")]
+        [Required(ErrorMessage ="Ingrese el nombre de la especialidad")]
         public string nombre { get; set; }
+        [Required(ErrorMessage = "Ingrese la descripción de la especialidad")]
         [Display(Name = "Descripcion")]
         public string description { get; set; }
     }

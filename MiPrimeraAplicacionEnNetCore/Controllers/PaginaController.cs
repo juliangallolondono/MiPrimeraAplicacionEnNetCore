@@ -52,5 +52,43 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 
                 return View(listaPaginas);
         }
+
+        public IActionResult Agregar()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Agregar(PaginaCLS oPaginaCLS)
+        {
+            try
+            {
+                using (BDHospitalContext db = new BDHospitalContext())
+                {
+                    if(!ModelState.IsValid)
+                    {
+                        return View(oPaginaCLS);
+                    }
+                    else
+                    {
+                        Pagina oPagina = new Pagina();
+
+                        oPagina.Accion = oPaginaCLS.accion;
+                        oPagina.Mensaje = oPaginaCLS.mensaje;
+                        oPagina.Controlador = oPaginaCLS.controller;
+                        oPagina.Bhabilitado = 1;
+
+                        db.Paginas.Add(oPagina);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(oPaginaCLS);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
