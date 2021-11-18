@@ -91,5 +91,17 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             return RedirectToActionPreserveMethod("Index");
 
         }
+
+        [HttpPost]
+        public IActionResult Eliminar(int iidTipoUsuario)
+        {
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                TipoUsuario oTipoUsuario = db.TipoUsuarios.Where(p => p.Iidtipousuario == iidTipoUsuario).First();
+                db.TipoUsuarios.Remove(oTipoUsuario);
+                db.SaveChanges();
+            }
+                return RedirectToAction("Index");
+        }
     }
 }

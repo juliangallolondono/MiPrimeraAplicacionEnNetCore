@@ -28,6 +28,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.descripcion)
                 </th>
+                <th>Operaciones</th>
             
             </tr>
             <tr>
@@ -46,10 +47,12 @@
                 <th>
                     <input type="text" name="descripcion" class="form-check form-control" value="@descripcion"/>
                 </th>
-            
+                <th></th>
+           
             </tr>
         </thead>
         <tbody>
+    
     @foreach (var item in Model) {
             <tr>
                 <td>
@@ -61,8 +64,41 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.descripcion)
                 </td>
+                <th>
+                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarTipoUsuario(@item.iidTipoUsuario)">
+                    </i>
+                </th>
             </tr>
     }
         </tbody>
     </table>
-  </form>
+    </form>
+
+    <form asp-action="Eliminar" asp-controller="TipoUsuario" method="post" id="frmEliminarTipoUsuario">
+        <input type="hidden" name="iidTipoUsuario" id="txtIdTipoUsuario" onclick="EliminarTipoUsuario(@IidTipoUsuario)"/>
+    </form>
+    
+
+
+    <script src="~/js/generic.js"></script>
+    <script src="~/js/sweetAlert.js"></script>
+
+    <script type="text/javascript">
+
+        function EliminarTipoUsuario(iidTipoUsuario)
+        {
+            document.getElementById("txtIdTipoUsuario").value = iidTipoUsuario;
+
+            mostrarModal()
+            .then(res=> {
+
+                if(res.value)
+                {
+                    var frmEliminar = document.getElementById("frmEliminarTipoUsuario");
+                    frmEliminar.submit();
+                }
+            })
+        }
+    </script>
+
+  

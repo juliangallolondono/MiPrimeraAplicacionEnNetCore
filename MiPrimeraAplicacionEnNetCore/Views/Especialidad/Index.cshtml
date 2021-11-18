@@ -21,6 +21,7 @@
             <th>@Html.DisplayNameFor(model=>model.iidespecialidad)</th>
             <th>@Html.DisplayNameFor(model=>model.nombre)</th>
             <th>@Html.DisplayNameFor(model=>model.description)</th>
+            <th>Operaciones</th>
         </tr>
     </thead>
     <tbody>
@@ -30,15 +31,41 @@
                 <td>@oEspecialidad.iidespecialidad</td>
                 <td>@oEspecialidad.nombre</td>
                 <td>@oEspecialidad.description</td>
+                <td>
+                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarEspecialidad(@oEspecialidad.iidespecialidad)">
+                    </i>
+                </td>
+                
             </tr>
             }
     </tbody>
 </table>
 
+<form asp-action="Eliminar" asp-controller="Especialidad" method="post" id="frmEnviarEliminar">
+    <input type="text" id="txtIdEspecialidad" name="iidespecialidad"/>
 
+</form>
+
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
 <script>
     function Limpiar() {
         document.getElementById("nombre").value = "";
         document.getElementById("frmFormulario").submit();
+    }
+
+    function EliminarEspecialidad(idEspecialidad){
+        document.getElementById("txtIdEspecialidad").value = idEspecialidad;
+        
+        mostrarModal("Desea eliminar el registro de la base de datos", "eliminar el registro")
+        .then(res=>{
+            if(res.value){
+                var frmEnviarEliminar = document.getElementById("frmEnviarEliminar");
+                frmEnviarEliminar.submit();
+            }
+        })
+        
+
     }
 </script>
