@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MiPrimeraAplicacionEnNetCore.Clases;
 using MiPrimeraAplicacionEnNetCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,6 +54,54 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 
 
                 return View(listaTipoUsuario);
+        }
+
+        public IActionResult Agregar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Agregar(TipoUsuarioCLS oTipoUsuarioCLS)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(oTipoUsuarioCLS);
+                }
+                else
+                {
+                    using (BDHospitalContext db = new BDHospitalContext())
+                    {
+                        TipoUsuario oTipoUsuario = new TipoUsuario();
+
+                        oTipoUsuario.Nombre = oTipoUsuarioCLS.nombre;
+                        oTipoUsuario.Descripcion = oTipoUsuarioCLS.descripcion;
+                        oTipoUsuario.Bhabilitado = 1;
+                        db.TipoUsuarios.Add(oTipoUsuario);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return View(oTipoUsuarioCLS);
+            }
+            return RedirectToActionPreserveMethod("Index");
+
+        }
+
+        [HttpPost]
+        public IActionResult Eliminar(int iidTipoUsuario)
+        {
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                TipoUsuario oTipoUsuario = db.TipoUsuarios.Where(p => p.Iidtipousuario == iidTipoUsuario).First();
+                db.TipoUsuarios.Remove(oTipoUsuario);
+                db.SaveChanges();
+            }
+                return RedirectToAction("Index");
         }
     }
 }

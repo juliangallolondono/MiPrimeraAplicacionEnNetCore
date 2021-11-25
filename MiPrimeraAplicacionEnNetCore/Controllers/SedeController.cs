@@ -48,5 +48,16 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 
                 return View(listaSede);
         }
+        [HttpPost]
+        public IActionResult Eliminar(int iidSede)
+        {
+            using (BDHospitalContext bd = new BDHospitalContext())
+            {
+                Sede oSede = bd.Sedes.Where(p => p.Iidsede == iidSede).First();
+                oSede.Bhabilitado = 0;
+                bd.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

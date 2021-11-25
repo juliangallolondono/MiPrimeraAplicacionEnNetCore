@@ -5,7 +5,7 @@
 
     string mensaje = ViewBag.mensaje;
 }
-
+<a class="btn btn-primary" asp-action="Agregar" asp-controller="Pagina">Nuevo</a>
 <form asp-controller="Pagina" asp-action="Index" class="mb-2" id="frmFormulario" method="post" >
     <label>Ingrese el mensaje:</label>
     <input id="txtMensaje" value="@mensaje" type="text" name="mensaje" class="form-check form-control"/>
@@ -20,6 +20,7 @@
             <th>@Html.DisplayNameFor(model => model.mensaje)</th>
             <th>@Html.DisplayNameFor(model => model.accion)</th>
             <th>@Html.DisplayNameFor(model => model.controller)</th>
+            <th>Operaciones</th>
         </tr>
     </thead>
     <tbody>
@@ -30,16 +31,42 @@
                 <td>@pagina.mensaje</td>
                 <td>@pagina.accion</td>
                 <td>@pagina.controller</td>
+                <td>
+                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarPagina(@pagina.iidPagina)">
+                    </i>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+<form asp-controller="Pagina" asp-action="Eliminar" method="post" id="frmEliminar">
+    <input type="hidden" id="txtIdPagina" name="iidpagina" class="btn-primary btn"/>
+</form>
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
+
 
 <script>
     function LimpiarCampos()
     {
         document.getElementById('txtMensaje').value = '';
         document.getElementById('frmFormulario').submit();
+    }
+
+    function EliminarPagina(iidPagina)
+    {
+        document.getElementById("txtIdPagina").value = iidPagina;
+
+        mostrarModal()
+        .then(res=>
+        {
+            if(res.value)
+            {
+                var frmEliminar = document.getElementById("frmEliminar");
+                frmEliminar.submit();
+            }
+        });
     }
 </script>
 

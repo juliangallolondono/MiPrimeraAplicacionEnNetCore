@@ -34,7 +34,7 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             llenarSexo();
             using (BDHospitalContext db = new BDHospitalContext())
             {
-                if(oPersonaCLS.iidSexo == 0)
+                if(oPersonaCLS.iidSexo == 0 || oPersonaCLS.iidSexo == null)
                 {
                     listaPersona = (from persona in db.Personas
                                     join sexo in db.Sexos
@@ -53,8 +53,7 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 {
                     listaPersona = (from persona in db.Personas
                                     join sexo in db.Sexos
-                                    on persona.Iidsexo equals
-                                    sexo.Iidsexo
+                                    on persona.Iidsexo equals sexo.Iidsexo
                                     where persona.Bhabilitado == 1
                                     && persona.Iidsexo == oPersonaCLS.iidSexo
                                     select new PersonaCLS
@@ -70,6 +69,51 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             }
 
                 return View(listaPersona);
+        }
+
+        public IActionResult Agregar()
+        {
+            llenarSexo();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Agregar(PersonaCLS oPersonaCLS)
+        {
+            try
+            {
+                llenarSexo();
+
+                if (!ModelState.IsValid)
+                {
+                    return View(oPersonaCLS);
+                }
+                else
+                {
+                    using (BDHospitalContext bd = new BDHospitalContext())
+                    {
+                        Persona oPersona = new Persona();
+                        oPersona.Nombre = oPersonaCLS.nombre;
+                        oPersona.Appaterno = oPersonaCLS.apPaterno;
+                        oPersona.Apmaterno = oPersonaCLS.apMaterno;
+                        oPersona.Telefonofijo = oPersonaCLS.telefonoFijo;
+                        oPersona.Telefonocelular = oPersonaCLS.telefonoCelular;
+                        oPersona.Fechanacimiento = oPersonaCLS.fechaNacimiento;
+                        oPersona.Email = oPersonaCLS.email;
+                        oPersona.Iidsexo = oPersonaCLS.iidSexo;
+                        oPersona.Bhabilitado = 1;
+                        bd.Personas.Add(oPersona);
+                        bd.SaveChanges();   
+                    }
+
+                }
+               
+                
+            }
+            catch(Exception ex)
+            {
+                return View(oPersonaCLS);
+            }
+            return RedirectToAction("index");
         }
     }
 }

@@ -6,7 +6,7 @@
     List<SelectListItem> listaSexo = ViewBag.listaSexo;
 }
 
-
+<a class="btn btn-primary" asp-action="Agregar" asp-controller="Persona">Nuevo</a>
 <form id="frmEnviar" asp-controller="Persona" asp-action="Index" method="post" style="display:grid; grid-template-columns:1fr 2fr 1fr 1fr" class="mb-2">
     <label>Ingrese el Sexo</label>
     @Html.DropDownList("iidSexo", listaSexo, new { @class="form form-control"})

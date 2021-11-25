@@ -5,11 +5,15 @@
     List<SelectListItem> listaForma = ViewBag.listaForma;
 }
 
+<a class="btn btn-primary" asp-action="Agregar" asp-controller="Medicamento">Agregar</a>
+
 <form style="display:grid; grid-template-columns:1fr 2fr" class="mb-2" id="frmEnviar">
     <label>Ingrese el nombre de la forma farmaceutica</label>
     @Html.DropDownList("iidFormaFarmaceutica", listaForma, new { @class="form form-control"})
 
 </form>
+
+
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -27,6 +31,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.nombreFormaFarmaceutica)
+            </th>
+            <th>
+                Operaciones
             </th>
             <th></th>
         </tr>
@@ -48,6 +55,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.nombreFormaFarmaceutica)
+            </td>
+            <td>
+                 <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarMedicamento(@item.iidMedicamento)">
+                </i>
+                <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Medicamento" asp-action="Editar" asp-route-id="@item.iidMedicamento">
+                </a>
             </td>
             
         </tr>

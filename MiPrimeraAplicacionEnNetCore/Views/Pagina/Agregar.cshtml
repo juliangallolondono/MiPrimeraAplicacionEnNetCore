@@ -1,0 +1,53 @@
+﻿@model MiPrimeraAplicacionEnNetCore.Clases.PaginaCLS
+
+@{
+    ViewData["Title"] = "Agregar";
+}
+
+<h4>Agregar Nueva Página</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Agregar" asp-controller="Pagina" id="frmEnviar" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="mensaje" class="control-label"></label>
+                <input asp-for="mensaje" class="form-control" />
+                <span asp-validation-for="mensaje" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accion" class="control-label"></label>
+                <input asp-for="accion" class="form-control" />
+                <span asp-validation-for="accion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="controller" class="control-label"></label>
+                <input asp-for="controller" class="form-control" />
+                <span asp-validation-for="controller" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Agregar" class="btn btn-primary" onclick="Abrir()" />
+                <a asp-action="Index" class="btn btn-danger">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
+
+<script>
+    function Abrir()
+    {
+        mostrarModal()
+        .then(res=>{
+            if(res.value){
+                var frmEnviar = document.getElementById('frmEnviar');
+                frmEnviar.submit();
+            }
+        })
+
+    }
+</script>
+
+

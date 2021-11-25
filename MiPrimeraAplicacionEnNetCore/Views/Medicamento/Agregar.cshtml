@@ -1,0 +1,68 @@
+﻿@using MiPrimeraAplicacionEnNetCore.Clases;
+@model MedicamentosCLS;
+@{
+    ViewData["Title"] = "Agregar";
+    List<SelectListItem> lista = ViewBag.listaFormaFarmaceutica;
+}
+
+<h1>Formulario Agregar Medicamento</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Guardar" asp-controller="Medicamento" method="post" id="frmEnviar">
+            <div class="form-group">
+                <label asp-for="nombre"></label>
+                <input type="text" class="form form-control" asp-for="nombre" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="concentracion"></label>
+                <input type="text" class="form form-control" asp-for="concentracion" />
+                <span asp-validation-for="concentracion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="iidFormaFarmaceutica"></label>
+                <select asp-for="iidFormaFarmaceutica" class="form form-control"
+                asp-items="lista"
+                ></select>
+                <span asp-validation-for="iidFormaFarmaceutica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="precio"></label>
+                <input type="text" class="form form-control" asp-for="precio" />
+                <span asp-validation-for="precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="stock"></label>
+                <input type="number" class="form form-control" asp-for="stock" />
+                <span asp-validation-for="stock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="presentacion"></label>
+                <input type="text" class="form form-control" asp-for="presentacion" />
+                <span asp-validation-for="presentacion" class="text-danger"></span>
+            </div>
+            <div>
+                <input  type="button" value="Guardar" onclick="Abrir()" class="btn btn-primary"/>
+                <a class="btn btn-danger" asp-action="Index" asp-controller="Medicamento">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/sweetAlert.js"></script>
+<script src="~/js/generic.js"></script>
+
+<script>
+    function Abrir()
+    {
+        mostrarModal().
+        then(res => {
+            if(res.value){
+                var frmEnviar = document.getElementById("frmEnviar");
+                frmEnviar.submit();
+            }
+        })
+    }
+</script>
+
