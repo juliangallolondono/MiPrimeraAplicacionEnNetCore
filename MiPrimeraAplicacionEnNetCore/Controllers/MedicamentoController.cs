@@ -36,38 +36,81 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Agregar(MedicamentosCLS oMedicamentoCLS)
+        public IActionResult Editar(int id)
         {
+            MedicamentosCLS oMedicamentoCLS = new();
+            using (BDHospitalContext db = new())
+            {
+                oMedicamentoCLS = (from medicamento in db.Medicamentos
+                                   where medicamento.Iidmedicamento == id
+                                   select new MedicamentosCLS
+                                   {
+                                       iidMedicamento = medicamento.Iidmedicamento,
+                                       nombre = medicamento.Nombre,
+                                       concentracion = medicamento.Concentracion,
+                                       iidFormaFarmaceutica = medicamento.Iidformafarmaceutica,
+                                       precio = medicamento.Precio,
+                                       stock = medicamento.Stock,
+                                       presentacion = medicamento.Presentacion
+                                   }).First();
+            }
+
+            ViewBag.listaFormaFarmaceutica = ListaFormaFarmaceutica();
+            return View(oMedicamentoCLS);
+        }
+
+        [HttpPost]
+        public IActionResult Guardar(MedicamentosCLS oMedicamentoCLS)
+        {
+            string nombreVista = "";
             try
             {
                 using (BDHospitalContext db = new BDHospitalContext())
                 {
+                    nombreVista = oMedicamentoCLS.iidMedicamento == 0 ? "Agregar" : "Editar";
                     if (!ModelState.IsValid)
                     {
                         ViewBag.listaFormaFarmaceutica = ListaFormaFarmaceutica();
-                        return View(oMedicamentoCLS);
+                        return View(nombreVista, oMedicamentoCLS);
                     }
                     else
                     {
-                        Medicamento oMedicamento = new Medicamento();
+                        if(oMedicamentoCLS.iidMedicamento == 0)
+                        {
+                            Medicamento oMedicamento = new Medicamento();
 
-                        oMedicamento.Nombre = oMedicamentoCLS.nombre;
-                        oMedicamento.Concentracion = oMedicamentoCLS.concentracion;
-                        oMedicamento.Precio  = oMedicamentoCLS.precio;
-                        oMedicamento.Stock = oMedicamentoCLS.stock;
-                        oMedicamento.Iidformafarmaceutica = oMedicamentoCLS.iidFormaFarmaceutica;
-                        oMedicamento.Presentacion = oMedicamentoCLS.presentacion;
-                        oMedicamento.Bhabilitado = 1;
+                            oMedicamento.Nombre = oMedicamentoCLS.nombre;
+                            oMedicamento.Concentracion = oMedicamentoCLS.concentracion;
+                            oMedicamento.Precio = oMedicamentoCLS.precio;
+                            oMedicamento.Stock = oMedicamentoCLS.stock;
+                            oMedicamento.Iidformafarmaceutica = oMedicamentoCLS.iidFormaFarmaceutica;
+                            oMedicamento.Presentacion = oMedicamentoCLS.presentacion;
+                            oMedicamento.Bhabilitado = 1;
 
-                        db.Medicamentos.Add(oMedicamento);
-                        db.SaveChanges();
+                            db.Medicamentos.Add(oMedicamento);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            Medicamento oMedicamento = db.Medicamentos.Where(o => o.Iidmedicamento == oMedicamentoCLS.iidMedicamento).First();
+
+                            oMedicamento.Nombre = oMedicamentoCLS.nombre;
+                            oMedicamento.Concentracion = oMedicamentoCLS.concentracion;
+                            oMedicamento.Precio = oMedicamentoCLS.precio;
+                            oMedicamento.Stock = oMedicamentoCLS.stock;
+                            oMedicamento.Iidformafarmaceutica = oMedicamentoCLS.iidFormaFarmaceutica;
+                            oMedicamento.Presentacion = oMedicamentoCLS.presentacion;
+
+                            db.SaveChanges();
+                        }
+
+                        
 
                     }
                 }
             } catch(Exception ex)
             {
-                return View(oMedicamentoCLS);
+                return View(nombreVista, oMedicamentoCLS);
             }
             return RedirectToAction("Index");
         }

@@ -4,12 +4,17 @@
     ViewData["Title"] = "Agregar";
 }
 
-<h1>Crear una Especialidad!</h1>
+<h1>Editar una Especialidad</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Guardar" method="post" id="frmEnviar">
+            <div class=form-group>
+                <label asp-for="iidespecialidad"></label>
+                <input asp-for="iidespecialidad"  class="form-check form--control"/>
+                <span asp-validation-for="iidespecialidad"  class="text-danger"></span>
+            </div>
             <div class=form-group>
                 <label asp-for="nombre"></label>
                 <input asp-for="nombre" class="form-check form--control"/>
@@ -26,7 +31,7 @@
             </div>
         </form>
     </div>
-</div>abrirModal
+</div>
 
 <script src="~/js/sweetAlert.js"></script>
 <script src="~/js/generic.js"></script>

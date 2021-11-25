@@ -57,32 +57,69 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Agregar(EspecialidadCLS oEspeciliadad)
+        public IActionResult Guardar(EspecialidadCLS oEspeciliadad)
         {
+
+            string nombreVista = oEspeciliadad.iidespecialidad == 0 ? "Agregar" : "Editar";
             try
             {
                 using (BDHospitalContext db = new BDHospitalContext())
                 {
-                    if(!ModelState.IsValid)
+                    
+
+                    if (!ModelState.IsValid)
                     {
-                        return View(oEspeciliadad);
+                        return View(nombreVista, oEspeciliadad);
                     }
                     else
                     {
-                        Especialidad objeto = new Especialidad();
-                        objeto.Nombre = oEspeciliadad.nombre;
-                        objeto.Descripcion = oEspeciliadad.description;
-                        objeto.Bhabilitado = 1;
-                        db.Especialidads.Add(objeto);   
-                        db.SaveChanges();   
+                        if(oEspeciliadad.iidespecialidad == 0)
+                        {
+                            
+                            Especialidad objeto = new Especialidad();
+                            objeto.Nombre = oEspeciliadad.nombre;
+                            objeto.Descripcion = oEspeciliadad.description;
+                            objeto.Bhabilitado = 1;
+                            db.Especialidads.Add(objeto);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            Especialidad objeto = new Especialidad();
+                            objeto = db.Especialidads.Where(x => x.Iidespecialidad == oEspeciliadad.iidespecialidad).First();
+
+
+                            objeto.Nombre = oEspeciliadad.nombre;
+                            objeto.Descripcion = oEspeciliadad.description;
+                            db.SaveChanges();
+                        }
+                         
                     }
                 }
             }
             catch (Exception ex)
             {
-                return View(oEspeciliadad);
+                return View(nombreVista, oEspeciliadad);
             }
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Editar(int id)
+        {
+
+            EspecialidadCLS oEspecialidad = new();
+            using (BDHospitalContext db = new())
+            {
+                oEspecialidad = (from especialidad in db.Especialidads
+                                 where especialidad.Iidespecialidad == id
+                                 select new EspecialidadCLS
+                                 {
+                                     iidespecialidad = especialidad.Iidespecialidad,
+                                     nombre = especialidad.Nombre,
+                                     description = especialidad.Descripcion
+                                 }).First();
+            }
+                return View(oEspecialidad);
         }
 
         [HttpPost]

@@ -32,6 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.nombreFormaFarmaceutica)
             </th>
+            <th>
+                Operaciones
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -52,6 +55,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.nombreFormaFarmaceutica)
+            </td>
+            <td>
+                 <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarMedicamento(@item.iidMedicamento)">
+                </i>
+                <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Medicamento" asp-action="Editar" asp-route-id="@item.iidMedicamento">
+                </a>
             </td>
             
         </tr>

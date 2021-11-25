@@ -57,6 +57,17 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Eliminar(int iidpagina)
+        {
+            using (BDHospitalContext db = new())
+            {
+                Pagina oPagina = db.Paginas.Where(p => p.Iidpagina == iidpagina).First();
+                db.Paginas.Remove(oPagina);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
 
 
         [HttpPost]
