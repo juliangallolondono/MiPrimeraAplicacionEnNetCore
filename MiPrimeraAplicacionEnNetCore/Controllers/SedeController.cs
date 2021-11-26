@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MiPrimeraAplicacionEnNetCore.Clases;
 using MiPrimeraAplicacionEnNetCore.Models;
 
@@ -59,5 +58,54 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             }
             return RedirectToAction("Index");
         }
+        public IActionResult Editar(int id)
+        {
+            SedeCLS oSedeCLS = new SedeCLS();
+            using (BDHospitalContext db = new())
+            {
+                oSedeCLS = (from sede in db.Sedes
+                            where sede.Iidsede == id
+                            select new SedeCLS
+                            {
+                                iidSede = sede.Iidsede,
+                                nombreSede = sede.Nombre,
+                                direccion = sede.Direccion
+
+                            }).First();
+            }
+
+            return View(oSedeCLS);
+        }
+
+        [HttpPost]
+        public IActionResult Guardar(SedeCLS oSedeCLS)
+        {
+            string nombreVista = oSedeCLS.iidSede == 0 ? "Agregar" : "Editar";
+            
+            if(!ModelState.IsValid)
+            {
+                return View(nombreVista, oSedeCLS);
+            }
+            else
+            {
+                using (BDHospitalContext db = new())
+                {
+                    if (oSedeCLS.iidSede != 0)
+                    {
+                        Sede oSede = db.Sedes.Where(x=> x.Iidsede == oSedeCLS.iidSede).First();
+
+                        oSede.Nombre = oSedeCLS.nombreSede;
+                        oSede.Direccion = oSedeCLS.direccion;
+                        db.SaveChanges();
+
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+            
+        }
+
+     
+
     }
 }

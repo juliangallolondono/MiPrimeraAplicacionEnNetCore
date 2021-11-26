@@ -41,7 +41,9 @@
             </td>
             <td>
                 <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarSede(@item.iidSede)">
-                    </i>
+                </i>
+                <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Sede" asp-action="Editar" asp-route-id="@item.iidSede">
+                </a>
             </td>
             
         </tr>

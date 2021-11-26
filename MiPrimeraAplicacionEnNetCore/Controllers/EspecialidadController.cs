@@ -59,16 +59,17 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
         [HttpPost]
         public IActionResult Guardar(EspecialidadCLS oEspeciliadad)
         {
-
+            int numeroVeces = 0;
             string nombreVista = oEspeciliadad.iidespecialidad == 0 ? "Agregar" : "Editar";
             try
             {
                 using (BDHospitalContext db = new BDHospitalContext())
                 {
-                    
+                    if(oEspeciliadad.iidespecialidad == 0) numeroVeces = db.Especialidads.Where(x => x.Nombre.ToLower().Trim() == oEspeciliadad.nombre.ToLower().Trim()).Count();
 
-                    if (!ModelState.IsValid)
+                    if (!ModelState.IsValid || numeroVeces > 0)
                     {
+                        if (numeroVeces >= 1) oEspeciliadad.mensajeError = "El Nombre de la especialidad ya existe";
                         return View(nombreVista, oEspeciliadad);
                     }
                     else
@@ -77,8 +78,8 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                         {
                             
                             Especialidad objeto = new Especialidad();
-                            objeto.Nombre = oEspeciliadad.nombre;
-                            objeto.Descripcion = oEspeciliadad.description;
+                            objeto.Nombre = oEspeciliadad.nombre.Trim();
+                            objeto.Descripcion = oEspeciliadad.description.Trim();
                             objeto.Bhabilitado = 1;
                             db.Especialidads.Add(objeto);
                             db.SaveChanges();

@@ -16,5 +16,6 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         [Required(ErrorMessage = "Ingrese la descripción de la especialidad")]
         [Display(Name = "Descripcion")]
         public string description { get; set; }
+        public string mensajeError { get; set; }
     }
 }
