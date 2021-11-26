@@ -20,6 +20,9 @@
             <th>@Html.DisplayNameFor(model=>model.nombreCompleto)</th>
             <th>@Html.DisplayNameFor(model=>model.email)</th>
             <th>@Html.DisplayNameFor(model=>model.nombreSexo)</th>
+            <th>
+                Operaciones
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -30,15 +33,40 @@
                 <td>@persona.nombreCompleto</td>
                 <td>@persona.email</td>
                 <td>@persona.nombreSexo</td>
+                <td>
+                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarPersona(@persona.iidPersona)">
+                    </i>
+                    <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Persona" asp-action="Editar" asp-route-id="@persona.iidPersona">
+                    </a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+<form asp-controller="Persona" asp-action="Eliminar" method="post" id="frmEliminar">
+    <input type="hidden" id="txtEliminar" name="iidPersona"/>
+</form>
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
 
 <script>
     function Limpiar() {
         document.getElementById("iidSexo").value = "";
         document.getElementById("frmEnviar").submit();
     }
+
+    function EliminarPersona(iidPersona)
+    {
+        document.getElementById("txtEliminar").value = iidPersona;
+        mostrarModal()
+        .then( res=>{
+            if(res.value){
+                var frmEliminar = document.getElementById("frmEliminar");
+                frmEliminar.submit();
+            }
+        })
+    }
+
 </script>
 

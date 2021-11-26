@@ -12,5 +12,8 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         [Display(Name ="Descripción")]
         [Required(ErrorMessage ="Debe ingresar la descripción")]
         public string descripcion { get; set; }
+
+        public string mensajeErrorNombre { get; set; }
+        public string mensajeErrorDescripcion { get; set; }
     }
 }

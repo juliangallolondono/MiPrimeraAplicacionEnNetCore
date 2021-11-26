@@ -56,37 +56,56 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 return View(listaTipoUsuario);
         }
 
-        public IActionResult Agregar()
+        public IActionResult Guardar()
         {
-            return View();
+            return View("Agregar");
         }
 
         [HttpPost]
-        public IActionResult Agregar(TipoUsuarioCLS oTipoUsuarioCLS)
+        public IActionResult Guardar(TipoUsuarioCLS oTipoUsuarioCLS)
         {
+            string nombreVista = "";
+            int numeroVecesNombre = 0;
+            int numeroVecesDescripcion = 0;
             try
             {
-                if (!ModelState.IsValid)
+                using (BDHospitalContext db = new BDHospitalContext())
                 {
-                    return View(oTipoUsuarioCLS);
-                }
-                else
-                {
-                    using (BDHospitalContext db = new BDHospitalContext())
+                    if(oTipoUsuarioCLS.iidTipoUsuario == 0)
+                    {
+                        numeroVecesNombre = db.TipoUsuarios.Where(x => x.Nombre.ToLower() == oTipoUsuarioCLS.nombre.Trim().ToLower()).Count();
+                        numeroVecesDescripcion = db.TipoUsuarios.Where(x => x.Descripcion == oTipoUsuarioCLS.descripcion.Trim().ToLower()).Count();
+
+                        nombreVista = "Agregar";
+                    }
+                    else
+                    {
+                        nombreVista = "Editar";
+                    }
+
+                    if (!ModelState.IsValid || numeroVecesNombre >= 1 || numeroVecesDescripcion >= 1)
+                    {
+                        if (numeroVecesNombre >= 1) oTipoUsuarioCLS.mensajeErrorNombre = "El nombre ya existe";
+                        if (numeroVecesDescripcion >= 1) oTipoUsuarioCLS.mensajeErrorDescripcion = "La descripción ya existe";
+
+                        return View(nombreVista, oTipoUsuarioCLS);
+                    }
+                    else
                     {
                         TipoUsuario oTipoUsuario = new TipoUsuario();
 
-                        oTipoUsuario.Nombre = oTipoUsuarioCLS.nombre;
-                        oTipoUsuario.Descripcion = oTipoUsuarioCLS.descripcion;
+                        oTipoUsuario.Nombre = oTipoUsuarioCLS.nombre.Trim();
+                        oTipoUsuario.Descripcion = oTipoUsuarioCLS.descripcion.Trim();
                         oTipoUsuario.Bhabilitado = 1;
                         db.TipoUsuarios.Add(oTipoUsuario);
                         db.SaveChanges();
+
                     }
                 }
             }
             catch(Exception ex)
             {
-                return View(oTipoUsuarioCLS);
+                return View(nombreVista, oTipoUsuarioCLS);
             }
             return RedirectToActionPreserveMethod("Index");
 

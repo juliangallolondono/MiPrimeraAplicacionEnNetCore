@@ -41,5 +41,7 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         [Required(ErrorMessage = "Seleccione un sexo")]
         [Display(Name = "Seleccione una opción")]
         public int? iidSexo { get; set; }
+
+        public string mensajeError { get; set; }
     }
 }

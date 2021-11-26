@@ -67,10 +67,30 @@
 }
     </tbody>
 </table>
+<form asp-controller="Medicamento" asp-action="Eliminar" method="post" id="frmEliminar">
+    <input id="txtEliminar" name="iidMedicamento" type="hidden"/>
+</form>
 
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
 <script>
     var iidFormaFarmaceutica = document.getElementById("iidFormaFarmaceutica");
-    iidFOrmaFarmaceutica.onchange = function() {
+    iidFormaFarmaceutica.onchange = function() {
         document.getElementById("frmEnviar").submit();
     }
+
+    function EliminarMedicamento(iidMedicamento)
+    {
+        document.getElementById("txtEliminar").value = iidMedicamento;
+
+        mostrarModal()
+        .then( res=>{
+            if(res.value){
+                var frmEliminar = document.getElementById("frmEliminar");
+                frmEliminar.submit();
+            }
+        })
+    }
+
 </script>
