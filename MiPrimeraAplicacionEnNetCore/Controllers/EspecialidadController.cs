@@ -1,15 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MiPrimeraAplicacionEnNetCore.Clases;
 using MiPrimeraAplicacionEnNetCore.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using cm =  System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiPrimeraAplicacionEnNetCore.Controllers
 {
-    public class EspecialidadController : Controller
+    public class EspecialidadController : BaseController
     {
+
+        public static List<EspecialidadCLS> lista { get; set; }
+        
+
+        public FileResult Exportar(string[] nombrePropiedades, string tipoReporte)
+        {
+            //string[] cabeceras = { "Id Especialidad", "Nombre", "Descripción" };
+            //string[] nombrePropiedades = { "iidespecialidad", "nombre", "description" };
+
+            if(tipoReporte == "Excel")
+            {
+                byte[] buffer = ExportarExcelDatos(nombrePropiedades, lista);
+                return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
+
+            return null;
+        }
+
+
         public IActionResult Index(EspecialidadCLS oEspecialidadCLS)
         {
             List<EspecialidadCLS> listaEspecialidad = new List<EspecialidadCLS>();
@@ -46,12 +68,12 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 
 
             }
-
-                return View(listaEspecialidad);
+            lista = listaEspecialidad;
+             return View(listaEspecialidad);
         }
 
 
-        public IActionResult Agregar()
+        public IActionResult Guardar()
         {
             return View();
         }
@@ -66,6 +88,7 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 using (BDHospitalContext db = new BDHospitalContext())
                 {
                     if(oEspeciliadad.iidespecialidad == 0) numeroVeces = db.Especialidads.Where(x => x.Nombre.ToLower().Trim() == oEspeciliadad.nombre.ToLower().Trim()).Count();
+                    else numeroVeces = db.Especialidads.Where(x => x.Nombre.ToLower().Trim() == oEspeciliadad.nombre.ToLower().Trim() && x.Iidespecialidad != oEspeciliadad.iidespecialidad ).Count();
 
                     if (!ModelState.IsValid || numeroVeces > 0)
                     {
@@ -143,5 +166,6 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             
             return RedirectToAction("Index");
         }
+        
     }
 }

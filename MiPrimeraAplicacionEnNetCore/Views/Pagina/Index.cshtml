@@ -13,7 +13,7 @@
     <input id="btnLimpiar" type="button" value="Limpiar" onclick="LimpiarCampos()" class="btn alert-danger"/>
 </form>
 
-<table class="table">
+<table class="table" id="table">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.iidPagina)</th>
@@ -34,6 +34,8 @@
                 <td>
                     <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarPagina(@pagina.iidPagina)">
                     </i>
+                    <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Pagina" asp-action="Editar" asp-route-id="@pagina.iidPagina">
+                    </a>
                 </td>
             </tr>
         }
@@ -48,6 +50,15 @@
 
 
 <script>
+
+    window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+    
+
+
     function LimpiarCampos()
     {
         document.getElementById('txtMensaje').value = '';

@@ -14,7 +14,7 @@
 </form>
 
 
-<table class="table">
+<table class="table" id="table">
     <thead class="thead-dark">
         <tr>
             <th>
@@ -35,7 +35,6 @@
             <th>
                 Operaciones
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -64,7 +63,7 @@
             </td>
             
         </tr>
-}
+        }
     </tbody>
 </table>
 <form asp-controller="Medicamento" asp-action="Eliminar" method="post" id="frmEliminar">
@@ -74,11 +73,22 @@
 
 <script src="~/js/generic.js"></script>
 <script src="~/js/sweetAlert.js"></script>
-<script>
+<script type="text/javascript">
+
+     window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+
+
+  
+
     var iidFormaFarmaceutica = document.getElementById("iidFormaFarmaceutica");
     iidFormaFarmaceutica.onchange = function() {
         document.getElementById("frmEnviar").submit();
     }
+
 
     function EliminarMedicamento(iidMedicamento)
     {

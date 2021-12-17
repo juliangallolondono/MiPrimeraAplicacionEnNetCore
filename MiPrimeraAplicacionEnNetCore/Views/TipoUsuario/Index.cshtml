@@ -16,7 +16,7 @@
 <hr />
 <form asp-controller="TipoUsuario" asp-action="Index">
     <input type="submit" value="Enviar" class="btn btn-primary"/>
-    <table class="table">
+    <table class="table" id="table">
         <thead class="thead-dark">
             <tr>
                 <th>
@@ -84,6 +84,12 @@
     <script src="~/js/sweetAlert.js"></script>
 
     <script type="text/javascript">
+        window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+    
 
         function EliminarTipoUsuario(iidTipoUsuario)
         {

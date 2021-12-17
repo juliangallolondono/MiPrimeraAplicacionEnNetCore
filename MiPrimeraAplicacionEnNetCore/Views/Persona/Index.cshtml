@@ -13,7 +13,7 @@
     <input type="submit" class="btn btn-primary" value="Buscar" />
     <input type="button" class="btn btn-danger" value="limpiar" onclick="Limpiar()"/>
 </form>
-<table class="table">
+<table class="table" id="table">
     <thead class="thead-dark">
         <tr>
             <th>@Html.DisplayNameFor(model=>model.iidPersona)</th>
@@ -51,6 +51,14 @@
 <script src="~/js/sweetAlert.js"></script>
 
 <script>
+    window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+    
+
+
     function Limpiar() {
         document.getElementById("iidSexo").value = "";
         document.getElementById("frmEnviar").submit();

@@ -21,5 +21,6 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         [MinLength(3, ErrorMessage ="La lóngitud mínima es de 3")]
         [MaxLength(100, ErrorMessage ="La lóngitud máxima es de 100")]
         public string controller { get; set; }
+        public string errorPagina { get; set; }
     }
 }

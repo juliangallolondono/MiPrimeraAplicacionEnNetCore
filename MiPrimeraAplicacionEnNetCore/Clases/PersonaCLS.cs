@@ -43,5 +43,6 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         public int? iidSexo { get; set; }
 
         public string mensajeError { get; set; }
+        public string mensajeErrorEmail { get; set; }
     }
 }

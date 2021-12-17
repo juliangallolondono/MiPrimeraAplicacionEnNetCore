@@ -6,6 +6,9 @@
     string nombreEspecialidad = ViewBag.nombreEspecialidad;
 }
 <a class="btn alert-secondary" asp-action="Agregar" asp-controller="Especialidad">Agregar</a>
+<input type="button" value="Exportar Excel" class="btn-primary btn" onclick="ExportarExcel()"/>
+<input type="button" value="Exportar Word" class="btn-primary btn" onclick="ExportarWord()"/>
+<input type="button" value="Exportar pdf" class="btn-primary btn" onclick="ExportarPDF()"/>
 
 <form asp-controller="Especialidad" asp-action="Index" method="post" class="mb-2" id="frmFormulario"
       style="display:grid; grid-template-columns: 1fr 2fr 1fr 1fr">
@@ -14,34 +17,50 @@
     <input type="submit" value="Enviar" class="btn btn-info" />
     <input type="button" value="Limpiar" class="btn btn-danger" onclick="Limpiar()"/>
 </form>
-
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model=>model.iidespecialidad)</th>
-            <th>@Html.DisplayNameFor(model=>model.nombre)</th>
-            <th>@Html.DisplayNameFor(model=>model.description)</th>
-            <th>Operaciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(EspecialidadCLS oEspecialidad in Model)
-            {
+<form asp-controller="Especialidad" asp-action="Exportar" id="frmReporte">
+    <table class="table" id="table">
+        @*<a asp-action="exportarExcel" asp-controller="Especialidad">Exportar Excel</a>*@
+        <thead class="thead-dark">
             <tr>
-                <td>@oEspecialidad.iidespecialidad</td>
-                <td>@oEspecialidad.nombre</td>
-                <td>@oEspecialidad.description</td>
-                <td>
-                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarEspecialidad(@oEspecialidad.iidespecialidad)">
-                    </i>
-                    <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Especialidad" asp-action="Editar" asp-route-id="@oEspecialidad.iidespecialidad">
-                    </a>
-                </td>
-                
+                <th>@Html.DisplayNameFor(model=>model.iidespecialidad)</th>
+                <th>@Html.DisplayNameFor(model=>model.nombre)</th>
+                <th>@Html.DisplayNameFor(model=>model.description)</th>
+                <th>Operaciones</th>
             </tr>
-            }
-    </tbody>
-</table>
+            <tr>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="iidespecialidad" />
+                    <input type="hidden" name="tipoReporte" id="tipoReporte" />
+                </th>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="nombre" />
+                </th>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="description" />
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(EspecialidadCLS oEspecialidad in Model)
+                {
+                <tr>
+                    <td>@oEspecialidad.iidespecialidad</td>
+                    <td>@oEspecialidad.nombre</td>
+                    <td>@oEspecialidad.description</td>
+                    <td>
+                        <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarEspecialidad(@oEspecialidad.iidespecialidad)">
+                        </i>
+                        <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Especialidad" asp-action="Editar" asp-route-id="@oEspecialidad.iidespecialidad">
+                        </a>
+                    </td>
+                
+                </tr>
+                }
+        </tbody>
+    </table>
+   </form>
+
 
 <form asp-action="Eliminar" asp-controller="Especialidad" method="post" id="frmEnviarEliminar">
     <input type="text" id="txtIdEspecialidad" name="iidespecialidad"/>
@@ -52,6 +71,13 @@
 <script src="~/js/generic.js"></script>
 <script src="~/js/sweetAlert.js"></script>
 <script>
+    window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+    
+
     function Limpiar() {
         document.getElementById("nombre").value = "";
         document.getElementById("frmFormulario").submit();
@@ -67,7 +93,21 @@
                 frmEnviarEliminar.submit();
             }
         })
-        
-
     }
+
+    function ExportarExcel(){
+        document.getElementById("tipoReporte").value = "Excel"
+        var frmReporte = document.getElementById("frmReporte");
+
+        frmReporte.submit();
+    }
+
+    function ExportarWord(){
+         document.getElementById("tipoReporte").value = "Word"
+    }
+
+    function ExportarPDF(){
+         document.getElementById("tipoReporte").value = "PDF"
+    }
+
 </script>

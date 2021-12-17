@@ -5,51 +5,72 @@
     string nombreSede = ViewBag.nombreSede;
 }
 
+<input type="button" value="Exportar Excel" class="btn-primary btn" onclick="ExportarExcel()"/>
+<input type="button" value="Exportar Word" class="btn-primary btn" onclick="ExportarWord()"/>
+<input type="button" value="Exportar pdf" class="btn-primary btn" onclick="ExportarPDF()"/>
+
 <form id="frmEnviar" asp-controller="Sede" asp-action="Index" class="mb-2" method="post">
     <label>Ingrese nombre sede</label>
     <input type="text" class="form-check form-control" name="nombreSede" onkeyup="Buscar()" value="@nombreSede"/>
 </form>
 
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.iidSede)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.nombreSede)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.direccion)
-            </th>
-            <th>
-                Operaciones
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.iidSede)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombreSede)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.direccion)
-            </td>
-            <td>
-                <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarSede(@item.iidSede)">
-                </i>
-                <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Sede" asp-action="Editar" asp-route-id="@item.iidSede">
-                </a>
-            </td>
+<form asp-controller="Sede" asp-action="Exportar" id="frmReporte">
+    <table class="table" id="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.iidSede)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombreSede)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.direccion)
+                </th>
+                <th>
+                    Operaciones
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="iidSede" />
+                    <input type="hidden" name="tipoReporte" id="tipoReporte" />
+                </th>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="nombreSede" />
+                </th>
+                <th>
+                    <input type="checkbox" checked name="nombrePropiedades" value="direccion" />
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.iidSede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreSede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.direccion)
+                </td>
+                <td>
+                    <i class="fas fa-trash-alt btn btn-danger mouse-Pointer" onclick="EliminarSede(@item.iidSede)">
+                    </i>
+                    <a class="fas fa-edit btn btn-primary mouse-Pointer" aria-hidden="true" asp-controller="Sede" asp-action="Editar" asp-route-id="@item.iidSede">
+                    </a>
+                </td>
             
-        </tr>
-}
-    </tbody>
-</table>
+            </tr>
+    }
+        </tbody>
+    </table>
+</form>
+
+
 <form asp-action="Eliminar" asp-controller="Sede" method="post" id="frmEliminar">
     <input type="hidden" name="iidSede" id="txtIdSede"/>
 </form>
@@ -57,7 +78,18 @@
 
 <script src="~/js/generic.js"></script>
 <script src="~/js/sweetAlert.js"></script>
-<script>
+<script type="text/javascript">
+
+
+
+    window.onload = function(){
+        $(document).ready( function () {
+    $('#table').DataTable();
+        });
+    }
+    
+
+
     function Buscar() {
         document.getElementById("frmEnviar").submit();
     }
@@ -75,4 +107,20 @@
             }
         })
     }
+
+    function ExportarExcel(){
+        document.getElementById("tipoReporte").value = "Excel"
+        var frmReporte = document.getElementById("frmReporte");
+
+        frmReporte.submit();
+    }
+
+    function ExportarWord(){
+         document.getElementById("tipoReporte").value = "Word"
+    }
+
+    function ExportarPDF(){
+         document.getElementById("tipoReporte").value = "PDF"
+    }
+
 </script>
