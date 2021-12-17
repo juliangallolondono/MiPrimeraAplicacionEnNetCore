@@ -8,6 +8,9 @@ using cm =  System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
 
 namespace MiPrimeraAplicacionEnNetCore.Controllers
 {
@@ -27,9 +30,23 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 byte[] buffer = ExportarExcelDatos(nombrePropiedades, lista);
                 return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             }
+            else if(tipoReporte == "PDF")
+            {
+                byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
+                return File(buffer, "application/pdf");
+            }
+            else if (tipoReporte == "Word")
+            {
+                byte[] buffer = ExportarDatosWord(nombrePropiedades, lista);
+                return File(buffer, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            }
+            
 
             return null;
         }
+
+
+
 
 
         public IActionResult Index(EspecialidadCLS oEspecialidadCLS)
