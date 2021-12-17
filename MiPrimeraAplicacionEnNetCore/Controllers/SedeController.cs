@@ -7,8 +7,23 @@ using MiPrimeraAplicacionEnNetCore.Models;
 
 namespace MiPrimeraAplicacionEnNetCore.Controllers
 {
-    public class SedeController : Controller
+    public class SedeController : BaseController
     {
+        public static List<SedeCLS> lista = new();
+        public FileResult Exportar(string[] nombrePropiedades, string tipoReporte)
+        {
+            //string[] cabeceras = { "Id Especialidad", "Nombre", "Descripción" };
+            //string[] nombrePropiedades = { "iidespecialidad", "nombre", "description" };
+
+            if (tipoReporte == "Excel")
+            {
+                byte[] buffer = ExportarExcelDatos(nombrePropiedades, lista);
+                return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
+
+            return null;
+        }
+
         public IActionResult Index(SedeCLS oSedeCLS)
         {
             List<SedeCLS> listaSede = new List<SedeCLS>();
@@ -42,11 +57,13 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
 
                     ViewBag.nombreSede = oSedeCLS.nombreSede;
                 }
-                
             }
+            lista = listaSede;
 
-                return View(listaSede);
+            return View(listaSede);
         }
+
+
         [HttpPost]
         public IActionResult Eliminar(int iidSede)
         {

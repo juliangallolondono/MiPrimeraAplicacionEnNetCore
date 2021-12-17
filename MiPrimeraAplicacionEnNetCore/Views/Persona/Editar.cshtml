@@ -1,0 +1,89 @@
+﻿@using MiPrimeraAplicacionEnNetCore.Clases;
+@model PersonaCLS;
+@{
+    List<SelectListItem> listaSexo = ViewBag.listaSexo;
+}
+
+<h1>Editar persona</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Persona" asp-action="Guardar" method="post" id="frmEnviar">
+            @if (Model != null && !String.IsNullOrEmpty(Model.mensajeError))
+            {
+                <p class="text-danger">@Model.mensajeError</p>
+            }
+            <div class="form-group">
+                <label asp-for="iidPersona"  ></label>
+                <input asp-for="iidPersona" type="number" readonly="true" class="form form-group" />
+                <span asp-validation-for="iidPersona" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="nombre"></label>
+                <input asp-for="nombre" class="form form-control" type="text" />
+                <span class="text-danger" asp-validation-for="nombre"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apPaterno"></label>
+                <input type="text" asp-for="apPaterno" class="form form-control" />
+                <span class="text-danger" asp-validation-for="apPaterno"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apMaterno"></label>
+                <input asp-for="apMaterno" class="form form-control" type="text" />
+                <span class="text-danger" asp-validation-for="apMaterno"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="telefonoFijo"></label>
+                <input  asp-for="telefonoFijo" class="form form-control" type="text"/>
+                <span asp-validation-for="telefonoFijo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="telefonoCelular"></label>
+                <input asp-for="telefonoCelular" class="form form-control" type="text" />
+                <span asp-validation-for="telefonoCelular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fechaNacimiento"></label>
+                <input asp-for="fechaNacimiento" class="form form-control" type="date"/>
+                <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email"></label>
+                <input asp-for="email" class="form-control" type="email" />
+                <span asp-validation-for="email" class="text-danger"></span>
+                 @if (Model != null && !String.IsNullOrEmpty(Model.mensajeErrorEmail))
+                {
+                    <p class="text-danger">@Model.mensajeErrorEmail</p>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="iidSexo"></label>
+                <select asp-items="@listaSexo" asp-for="iidSexo" class="form form-control"></select>
+                <span asp-for="iidSexo" class="text-danger" ></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Guardar" onclick="AbrirModal()" class="btn-primary btn"/>
+                <a asp-action="Index" asp-controller="Persona" class="btn-danger btn">Regresar</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script src="~/js/generic.js"></script>
+<script src="~/js/sweetAlert.js"></script>
+<script>
+    function AbrirModal()
+    {
+        mostrarModal()
+        .then(res=>{
+            if(res.value){
+                var frmEnviar = document.getElementById("frmEnviar");
+                frmEnviar.submit();
+            }
+        })
+    }
+</script>

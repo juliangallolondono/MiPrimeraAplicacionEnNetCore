@@ -80,6 +80,10 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                     }
                     else
                     {
+
+                        numeroVecesNombre = db.TipoUsuarios.Where(x => x.Nombre.ToLower() == oTipoUsuarioCLS.nombre.Trim().ToLower() && x.Iidtipousuario != oTipoUsuarioCLS.iidTipoUsuario).Count();
+                        numeroVecesDescripcion = db.TipoUsuarios.Where(x => x.Descripcion == oTipoUsuarioCLS.descripcion.Trim().ToLower() && x.Iidtipousuario != oTipoUsuarioCLS.iidTipoUsuario).Count(); 
+                        
                         nombreVista = "Editar";
                     }
 

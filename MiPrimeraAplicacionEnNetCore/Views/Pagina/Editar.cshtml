@@ -1,16 +1,16 @@
 ﻿@model MiPrimeraAplicacionEnNetCore.Clases.PaginaCLS
 
 @{
-    ViewData["Title"] = "Agregar";
+    ViewData["Title"] = "Editar";
 }
 
-<h4>Agregar Nueva Página</h4>
+<h4>Editar Nueva Página</h4>
 <hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Guardar" asp-controller="Pagina" id="frmEnviar" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+             <div class="form-group">
                 <label asp-for="iidPagina" class="control-label"></label>
                 <input asp-for="iidPagina" class="form-control" />
                 <span asp-validation-for="iidPagina" class="text-danger"></span>
