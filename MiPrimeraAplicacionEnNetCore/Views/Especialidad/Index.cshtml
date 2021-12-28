@@ -9,6 +9,7 @@
 <input type="button" value="Exportar Excel" class="btn-primary btn" onclick="ExportarExcel()"/>
 <input type="button" value="Exportar Word" class="btn-primary btn" onclick="ExportarWord()"/>
 <input type="button" value="Exportar pdf" class="btn-primary btn" onclick="ExportarPDF()"/>
+<input type="button" value="Imprimir" class="btn-primary btn" onclick="Imprimir()"/>
 
 <form asp-controller="Especialidad" asp-action="Index" method="post" class="mb-2" id="frmFormulario"
       style="display:grid; grid-template-columns: 1fr 2fr 1fr 1fr">
@@ -27,7 +28,7 @@
                 <th>@Html.DisplayNameFor(model=>model.description)</th>
                 <th>Operaciones</th>
             </tr>
-            <tr>
+            <tr id="tCheck">
                 <th>
                     <input type="checkbox" checked name="nombrePropiedades" value="iidespecialidad" />
                     <input type="hidden" name="tipoReporte" id="tipoReporte" />
@@ -71,12 +72,7 @@
 <script src="~/js/generic.js"></script>
 <script src="~/js/sweetAlert.js"></script>
 <script>
-    window.onload = function(){
-        $(document).ready( function () {
-    $('#table').DataTable();
-        });
-    }
-    
+   
 
     function Limpiar() {
         document.getElementById("nombre").value = "";
@@ -95,24 +91,6 @@
         })
     }
 
-    function ExportarExcel(){
-        document.getElementById("tipoReporte").value = "Excel"
-        var frmReporte = document.getElementById("frmReporte");
-
-        frmReporte.submit();
-    }
-
-    function ExportarWord(){
-         document.getElementById("tipoReporte").value = "Word"
-          var frmReporte = document.getElementById("frmReporte");
-          frmReporte.submit();
-    }
-
-    function ExportarPDF(){
-         document.getElementById("tipoReporte").value = "PDF"
-          var frmReporte = document.getElementById("frmReporte");
-          frmReporte.submit();
-
-    }
+   
 
 </script>

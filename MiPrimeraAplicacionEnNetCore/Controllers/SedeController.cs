@@ -25,11 +25,12 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
                 return File(buffer, "application/pdf");
             }
-            else if (tipoReporte == "PDF")
+            else if (tipoReporte == "Word")
             {
-                byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
-                return File(buffer, "application/pdf");
+                byte[] buffer = ExportarDatosWord(nombrePropiedades, lista);
+                return File(buffer, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             }
+
 
             return null;
         }

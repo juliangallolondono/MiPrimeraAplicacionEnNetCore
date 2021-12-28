@@ -61,6 +61,8 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             }
         }
 
+        
+
         public byte[] ExportarPDFDatos<T>(string[] nombrePropiedades, List<T> lista)
         {
             using (MemoryStream ms = new())
@@ -123,6 +125,34 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 textRange.CharacterFormat.FontSize = 20f;
                 textRange.CharacterFormat.FontName = "Calibri";
                 textRange.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Blue;
+
+                IWTable table =  section.AddTable();
+                int numeroColumnas = nombrePropiedades.Length;
+                int nFilas = lista.Count();
+                table.ResetCells(nFilas + 1, numeroColumnas);
+
+                Dictionary<string, string> diccionary = cm.TypeDescriptor.GetProperties(typeof(T)).Cast<cm.PropertyDescriptor>().ToDictionary(p => p.Name, p => p.DisplayName);
+
+                for (int i=0; i<numeroColumnas; i++)
+                {
+                    table[0, i].AddParagraph().AppendText(diccionary[nombrePropiedades[i]]);
+                }
+
+                int fila = 1;
+
+                int col = 0;
+
+                foreach(object item in lista)
+                {
+                    col = 0;
+                    foreach(string propiedad in nombrePropiedades)
+                    {
+                        table[fila,col].AddParagraph().AppendText(item.GetType().GetProperty(propiedad).GetValue(item).ToString());
+                        col++;
+                    }
+                    fila++;
+                }
+
 
                 document.Save(ms, FormatType.Docx);
                 return ms.ToArray();

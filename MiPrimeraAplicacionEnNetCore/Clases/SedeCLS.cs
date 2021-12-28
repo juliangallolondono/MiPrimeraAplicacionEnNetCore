@@ -19,6 +19,7 @@ namespace MiPrimeraAplicacionEnNetCore.Clases
         public string nombreSede { get; set; }
         [Display(Name = "Dirección")]
         [Required]
+        [DisplayName("Nombre de la sede")]
         public string direccion { get; set; }
     }
 }

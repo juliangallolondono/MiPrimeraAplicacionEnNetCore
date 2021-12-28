@@ -30,11 +30,11 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
                 byte[] buffer = ExportarExcelDatos(nombrePropiedades, lista);
                 return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             }
-            else if(tipoReporte == "PDF")
-            {
-                byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
-                return File(buffer, "application/pdf");
-            }
+            //else if(tipoReporte == "PDF")
+            //{
+            //    byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
+            //    return File(buffer, "application/pdf");
+            //}
             else if (tipoReporte == "Word")
             {
                 byte[] buffer = ExportarDatosWord(nombrePropiedades, lista);
@@ -183,6 +183,16 @@ namespace MiPrimeraAplicacionEnNetCore.Controllers
             
             return RedirectToAction("Index");
         }
-        
+
+        public string exportarPDFDatosDos(string[] nombrePropiedades)
+        {
+            byte[] buffer = ExportarPDFDatos(nombrePropiedades, lista);
+
+            string cadena = Convert.ToBase64String(buffer);
+
+            cadena = "data:application/pdf;base64,"+cadena;
+            return cadena;
+        }
+
     }
 }
